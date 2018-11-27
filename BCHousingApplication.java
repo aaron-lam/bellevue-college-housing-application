@@ -10,11 +10,9 @@ public class BCHousingApplication {
             Class.forName("com.mysql.cj.jdbc.Driver");
             String url = "jdbc:mysql://127.0.0.1:3306/BCHousingDB";
             String user, pass;
-//            user = readEntry("user id : ");
-//            pass = readEntry("password: ");
+            user = readEntry("user id : ");
+            pass = readEntry("password: ");
 
-            user = "student";
-            pass = "password";
             conn = DriverManager.getConnection(url, user, pass);
 
             boolean done = false;
@@ -26,10 +24,10 @@ public class BCHousingApplication {
                 System.out.println();
                 switch (ch.charAt(0)) {
                     case '1':
-                        residentLogin(conn);
+                        ResidentManager.residentLogin(conn);
                         break;
                     case '2':
-                        applicantRegistration(conn);
+                        ApplicantManager.applicantMain(conn);
                         break;
                     case '3':
                         openAdminPage(conn);
@@ -57,111 +55,6 @@ public class BCHousingApplication {
         }
     }
 
-    private static void residentLogin(Connection conn) throws SQLException {
-        String userID, password, query;
-        String studentID = null;
-        String name = null;
-        String gender, college, department, maritalStatus;
-        userID = readEntry("Enter User ID: ");
-        password = readEntry("Enter password: ");
-//        System.out.println("Implement resident login here");
-        query = "SELECT * FROM Students "
-                + "WHERE IdNumber = " + userID;
-
-        PreparedStatement p = conn.prepareStatement(query);
-        ResultSet r = p.executeQuery();
-        while (r.next()) {
-            studentID = r.getString(1);
-            name = r.getString(2);
-            gender = r.getString(3);
-            college = r.getString(4);
-            department = r.getString(5);
-            maritalStatus = r.getString(6);
-
-            System.out.println(studentID + " " + name);
-        }
-
-        if (studentID != null) {
-            System.out.println("Welcome " + name);
-        }
-    }
-
-    private static void applicantRegistration(Connection conn) throws SQLException {
-        boolean done = false;
-        printApplicantPage();
-        System.out.print("Type in your option: ");
-        System.out.flush();
-        String ch = readLine();
-        System.out.println();
-        switch (ch.charAt(0)) {
-            case '1':
-                addNewApplicant(conn);
-                break;
-            case '2':
-                break;
-            case '3':
-                break;
-            case '4':
-                done = true;
-                break;
-            default:
-                System.out.println(" Not a valid option.");
-        }
-    }
-
-    public static void printApplicantPage() {
-        System.out.println("***********************************************************");
-        System.out.println("                     ***************                       ");
-        System.out.println("                      Applicant Menu                       ");
-        System.out.println("                     ***************                       ");
-        System.out.println("***********************************************************");
-        System.out.println("                     1. New Applicant                      ");
-        System.out.println("                 2. Update Applicant Information           ");
-        System.out.println("                 3. Delete Applicant Information           ");
-        System.out.println("                          4. Quit                          ");
-    }
-
-    private static void addNewApplicant(Connection conn) throws SQLException {
-        String idNumber = null;
-        String name, gender, college, department, maritalStatus;
-        name = readEntry("Enter your name: ");
-        gender = readEntry("Enter your gender: ");
-        college = readEntry("Enter your college: ");
-        department = readEntry("Enter your department: ");
-        maritalStatus = readEntry("Enter marital status: ");
-
-        String ssn, suitePreference, apartmentPreference, villagePreference, date;
-        ssn = readEntry("Enter ssn: ");
-        suitePreference = readEntry("Enter suite preference (One Bedroom or Two Bedroom): ");
-        apartmentPreference = readEntry("Enter apartment preference (Two Bedroom or Four Bedroom): ");
-        villagePreference = readEntry("Enter village preference (East or West): ");
-//        date = readEntry("Enter today's date (MM/DD/YYYY): ");
-
-        String maxIdQuery = "SELECT MAX(IdNumber) FROM Students";
-
-        PreparedStatement p = conn.prepareStatement(maxIdQuery);
-        ResultSet r = p.executeQuery();
-        while (r.next()) {
-            idNumber = r.getString(1);
-        }
-
-        String query = "INSERT INTO Students VALUES "
-                + "(1 + " + idNumber + ",'" + name + "','" + gender + "','"
-                + college + "','" + department + "','" + maritalStatus + "')";
-
-        p = conn.prepareStatement(query);
-        p.executeUpdate();
-
-        query = "INSERT INTO Applicant VALUES "
-                + "(" + ssn + ",'Applied','" + suitePreference + "','" + apartmentPreference
-                + "','" + villagePreference + "'," + "NULL" + ")";
-
-        p = conn.prepareStatement(query);
-        p.executeUpdate();
-
-        System.out.println("Application submitted");
-    }
-
     private static void openAdminPage(Connection conn) throws SQLException {
         printAdminPage();
         boolean done = false;
@@ -176,8 +69,8 @@ public class BCHousingApplication {
                     System.out.println("Not required to implement this.");
                     break;
                 case '2':
-                    System.out.println("Not required to implement this.");
-                    break;
+                	AdminAppManager.manageApplicants(conn);
+                	break;
                 case '3':
                     System.out.println("Not required to implement this.");
                     break;
@@ -195,6 +88,8 @@ public class BCHousingApplication {
             }
         } while (!done);
     }
+    
+
 
     private static void openAdministrativeReports(Connection conn) throws SQLException {
         printAdministrativeReportPage();
@@ -278,9 +173,9 @@ public class BCHousingApplication {
         System.out.println("                     ***************                       ");
         System.out.println("***********************************************************");
         System.out.println("                     1. Resident Login                     ");
-        System.out.println("                 2. Applicant Registration/Apply           ");
-        System.out.println("                           3. Admin                        ");
-        System.out.println("                           4. Quit                         ");
+        System.out.println("               2. Applicant Registration/Apply             ");
+        System.out.println("                        3. Admin                           ");
+        System.out.println("                        4. Quit                            ");
     }
 
     private static void printAdminPage() {
