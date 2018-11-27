@@ -12,7 +12,7 @@ use BCHousingDB;
  */
 
 CREATE TABLE Applicant (
-  SSN               	INT(9) PRIMARY KEY,
+  SSN               	VARCHAR(9) PRIMARY KEY,
   StudentStatus     	ENUM ('Not Applied', 'Applied', 'Processing', 'Accepted', 'Rejected') NOT NULL,
   SuitePreference   	ENUM ('One Bedroom', 'Two Bedroom'),
   ApartmentPreference 	ENUM('Two Bedroom', 'Four Bedroom'),  
@@ -37,7 +37,7 @@ CREATE TABLE Assignment (
   AptSuite 			ENUM('Apartment','Suite'),   	# maybe name this ArrangementType for clarity?
   Village 			ENUM('East','West'),
   MarriageEligable 	ENUM ('Yes','No'),
-  SSN 				INT(9) DEFAULT NULL,
+  SSN 				VARCHAR(9) DEFAULT NULL,
   CheckoutDate 		DATE DEFAULT NULL,
   PRIMARY KEY (BuildingNo, ApartmentSuiteNo, Bed),
   FOREIGN KEY (SSN) REFERENCES Applicant (SSN)
@@ -55,7 +55,7 @@ CREATE TABLE MaintenanceRequest (
 );
 
 CREATE TABLE FamilyHead (											# mainly considering making this into a self relation on the student table like
-  SSN         INT(9),												# Sara suggested but also like the idea of tracking family heads indivdiually
+  SSN         VARCHAR(9),												# Sara suggested but also like the idea of tracking family heads indivdiually
   IDNoStudent INT(9),
   College     VARCHAR(255),
   Department  VARCHAR(255),
@@ -64,8 +64,8 @@ CREATE TABLE FamilyHead (											# mainly considering making this into a self
 );
 
 CREATE TABLE RoommateRequest (
-  ReqestedSSN    INT(9),
-  ApplicantSSN   INT(9),
+  ReqestedSSN    VARCHAR(9),
+  ApplicantSSN   VARCHAR(9),
   ReqestedSpouse VARCHAR(255),            # should this be a boolean? IE true when the requested roommate is the spouse of the applicant
   PRIMARY KEY (ReqestedSSN, ApplicantSSN),
   FOREIGN KEY (ApplicantSSN) REFERENCES Applicant (SSN)
@@ -79,7 +79,7 @@ CREATE TABLE AccountBalance (
 );
 
 CREATE TABLE Administrator (
-  SSN        INT(9) PRIMARY KEY,
+  SSN        VARCHAR(9) PRIMARY KEY,
   Password   VARCHAR(32),
   StaffID    INT(9)                                                                                                          NOT NULL,
   Name       VARCHAR(255)                                                                                                    NOT NULL,
