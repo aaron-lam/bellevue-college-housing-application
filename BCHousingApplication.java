@@ -53,7 +53,6 @@ public class BCHousingApplication {
     }
 
     private static void openAdminPage(Connection conn) throws SQLException {
-        printAdminPage();
         boolean done = false;
         do {
             printAdminPage();
@@ -121,7 +120,7 @@ public class BCHousingApplication {
     private static void printHousingDepartmentReport(Connection conn) throws SQLException {
         String query = "SELECT AptSuite, ApartmentSuiteNo, Village, BuildingNo " +
                 "FROM Assignment " +
-                "WHERE SSN IS NULL;";
+                "WHERE SSN = '';";
         PreparedStatement p = conn.prepareStatement(query);
         ResultSet r = p.executeQuery();
         while (r.next()) {
