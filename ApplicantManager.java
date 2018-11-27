@@ -1,6 +1,3 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,7 +9,7 @@ public class ApplicantManager {
         printApplicantPage();
         System.out.print("Type in your option: ");
         System.out.flush();
-        String ch = readLine();
+        String ch = InputReader.readLine();
         System.out.println();
         switch (ch.charAt(0)) {
             case '1':
@@ -53,26 +50,26 @@ public class ApplicantManager {
         String idNumber = null;
         String name, gender, college, department, maritalStatus;
         String roomSSN = null;
-        name = readEntry("Enter your name: ");
-        gender = readEntry("Enter your gender: ");
-        college = readEntry("Enter your college: ");
-        department = readEntry("Enter your department: ");
-        maritalStatus = readEntry("Enter marital status: ");
+        name = InputReader.readEntry("Enter your name: ");
+        gender = InputReader.readEntry("Enter your gender: ");
+        college = InputReader.readEntry("Enter your college: ");
+        department = InputReader.readEntry("Enter your department: ");
+        maritalStatus = InputReader.readEntry("Enter marital status: ");
 
         String ssn, suitePreference, apartmentPreference, villagePreference, date;
-        ssn = readEntry("Enter ssn: ");
-        suitePreference = readEntry("Enter suite preference (One Bedroom or Two Bedroom): ");
-        apartmentPreference = readEntry("Enter apartment preference (Two Bedroom or Four Bedroom): ");
-        villagePreference = readEntry("Enter village preference (East or West): ");
+        ssn = InputReader.readEntry("Enter ssn: ");
+        suitePreference = InputReader.readEntry("Enter suite preference (One Bedroom or Two Bedroom): ");
+        apartmentPreference = InputReader.readEntry("Enter apartment preference (Two Bedroom or Four Bedroom): ");
+        villagePreference = InputReader.readEntry("Enter village preference (East or West): ");
         
         System.out.println();
         System.out.print("Would you like to request a roommate (y/n)?: ");
         System.out.flush();
-        String ch = readLine();
+        String ch = InputReader.readLine();
         System.out.println();
         switch (ch.charAt(0)) {
             case 'y':
-                roomSSN = readEntry("Enter roommate SSN: ");                   // should there be another way to track the roommate?
+                roomSSN = InputReader.readEntry("Enter roommate SSN: ");                   // should there be another way to track the roommate?
                 break;                                                         // Should Spouse field be a boolean instead?
             case 'n':
                 break;
@@ -126,35 +123,4 @@ public class ApplicantManager {
 //    private static void printUpdateMenu() {
 //    	
 //    }
-
-
-    static String readEntry(String prompt) {
-        try {
-            StringBuffer buffer = new StringBuffer();
-            System.out.print(prompt);
-            System.out.flush();
-            int c = System.in.read();
-            while (c != '\n' && c != -1) {
-                buffer.append((char) c);
-                c = System.in.read();
-            }
-            return buffer.toString().trim();
-        } catch (IOException e) {
-            return "";
-        }
-    }
-
-    private static String readLine() {
-        InputStreamReader isr = new InputStreamReader(System.in);
-        BufferedReader br = new BufferedReader(isr, 1);
-        String line = "";
-
-        try {
-            line = br.readLine();
-        } catch (IOException e) {
-            System.out.println("Error in SimpleIO.readLine: " + "IOException was thrown");
-            System.exit(1);
-        }
-        return line;
-    }
 }
