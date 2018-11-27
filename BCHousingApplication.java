@@ -12,8 +12,7 @@ public class BCHousingApplication {
             String user, pass;
 //            user = readEntry("user id : ");
 //            pass = readEntry("password: ");
-//            user = "root";
-//            pass = "Spartan117*";
+
             user = "student";
             pass = "password";
             conn = DriverManager.getConnection(url, user, pass);
