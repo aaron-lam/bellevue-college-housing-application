@@ -12,36 +12,36 @@ use BCHousingDB;
  */
 
 CREATE TABLE Applicant (
-  SSN               VARCHAR(9) PRIMARY KEY,
-  Name				VARCHAR(255) NOT NULL,
-  StudentStatus		ENUM('Student','Alumni') NOT NULL,
-  ResidentStatus     ENUM ('Not Applied', 'Applied', 'Processing', 'Accepted', 'Rejected') NOT NULL,
-  SuitePreference   ENUM ('One Bedroom', 'Two Bedroom'),
-  ApartmentPreference ENUM('Two Bedroom', 'Four Bedroom'),
-  VillagePreference ENUM('East','West'),
-  ApplicationDate	DATE
+  SSN                 VARCHAR(9) PRIMARY KEY,
+  Name                VARCHAR(255)                                                          NOT NULL,
+  StudentStatus       ENUM ('Student', 'Alumni')                                            NOT NULL,
+  ResidentStatus      ENUM ('Not Applied', 'Applied', 'Processing', 'Accepted', 'Rejected') NOT NULL,
+  SuitePreference     ENUM ('One Bedroom', 'Two Bedroom'),
+  ApartmentPreference ENUM ('Two Bedroom', 'Four Bedroom'),
+  VillagePreference   ENUM ('East', 'West'),
+  ApplicationDate     DATE
 );
 
 CREATE TABLE Students (
   IdNumber      INT(9) PRIMARY KEY,
-  SSN			VARCHAR(9) unique,
+  SSN           VARCHAR(9) unique,
   Name          VARCHAR(255)                                                                                                    NOT NULL,
   Gender        ENUM ('Feminine', 'Masculine', 'Androgynous', 'Gender Neutral', 'Transgender', 'Other', 'Prefer Not To Answer') NOT NULL,
   College       VARCHAR(255),
   Department    VARCHAR(255),
-  MaritalStatus ENUM ('Single', 'Married', 'Other', 'Prefer Not To Answer')  NOT NULL
+  MaritalStatus ENUM ('Single', 'Married', 'Other', 'Prefer Not To Answer')                                                     NOT NULL
 );
 
 CREATE TABLE Assignment (
-  BuildingNo   INT(4),
-  ApartmentSuiteNo  INT(35),
-  Bedroom INT(4),
-  Bed INT(4),
-  AptSuite ENUM('Apartment','Suite'),
-  Village ENUM('East','West'),
-  MarriageEligable ENUM ('Yes','No'),
-  SSN VARCHAR(9) DEFAULT NULL,
-  CheckoutDate DATE DEFAULT NULL,
+  BuildingNo       INT(4),
+  ApartmentSuiteNo INT(35),
+  Bedroom          INT(4),
+  Bed              INT(4),
+  AptSuite         ENUM ('Apartment', 'Suite'),
+  Village          ENUM ('East', 'West'),
+  MarriageEligable ENUM ('Yes', 'No'),
+  SSN              VARCHAR(9) DEFAULT NULL,
+  CheckoutDate     DATE       DEFAULT NULL,
   PRIMARY KEY (BuildingNo, ApartmentSuiteNo, Bed),
   FOREIGN KEY (SSN) REFERENCES Students (SSN)
 );
@@ -67,7 +67,7 @@ CREATE TABLE FamilyHead (
 );
 
 CREATE TABLE RoommateRequest (
-  RequestedName    VARCHAR(255),
+  RequestedName  VARCHAR(255),
   ApplicantSSN   VARCHAR(9),
   ReqestedSpouse TINYINT(1),
   PRIMARY KEY (RequestedName, ApplicantSSN),
@@ -94,5 +94,5 @@ CREATE TABLE Administrator (
 );
 
 ALTER TABLE Applicant
-ADD CONSTRAINT FOREIGN KEY (SSN)
+  ADD CONSTRAINT FOREIGN KEY (SSN)
 REFERENCES Students (SSN);
