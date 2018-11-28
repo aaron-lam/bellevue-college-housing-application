@@ -65,8 +65,8 @@ public class BCHousingApplication {
                     System.out.println("Not required to implement this.");
                     break;
                 case '2':
-                	AdminAppManager.manageApplicants(conn);
-                	break;
+                    AdminAppManager.manageApplicants(conn);
+                    break;
                 case '3':
                     System.out.println("Not required to implement this.");
                     break;
@@ -84,8 +84,6 @@ public class BCHousingApplication {
             }
         } while (!done);
     }
-    
-
 
     private static void openAdministrativeReports(Connection conn) throws SQLException {
         printAdministrativeReportPage();
@@ -120,7 +118,7 @@ public class BCHousingApplication {
     private static void printHousingDepartmentReport(Connection conn) throws SQLException {
         String query = "SELECT AptSuite, ApartmentSuiteNo, Village, BuildingNo " +
                 "FROM Assignment " +
-                "WHERE SSN = '';";
+                "WHERE SSN = 'NULL';";
         PreparedStatement p = conn.prepareStatement(query);
         ResultSet r = p.executeQuery();
         while (r.next()) {

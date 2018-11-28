@@ -16,14 +16,14 @@ public class ApplicantManager {
                 addNewApplicant(conn);
                 break;
             case '2':
-            	 System.out.println("Not required to implement this.");
+                System.out.println("Not required to implement this.");
                 break;
             case '3':
-            	System.out.println("Not required to implement this.");
+                System.out.println("Not required to implement this.");
                 break;
             case '4':
-            	System.out.println("Not required to implement this.");
-            	break;
+                System.out.println("Not required to implement this.");
+                break;
             case '5':
                 done = true;
                 break;
@@ -31,7 +31,7 @@ public class ApplicantManager {
                 System.out.println(" Not a valid option.");
         }
     }
-    
+
     private static void printApplicantPage() {
         System.out.println("***********************************************************");
         System.out.println("                     ***************                       ");
@@ -61,7 +61,7 @@ public class ApplicantManager {
         suitePreference = InputReader.readEntry("Enter suite preference (One Bedroom or Two Bedroom): ");
         apartmentPreference = InputReader.readEntry("Enter apartment preference (Two Bedroom or Four Bedroom): ");
         villagePreference = InputReader.readEntry("Enter village preference (East or West): ");
-        
+
         System.out.println();
         System.out.print("Would you like to request a roommate (y/n)?: ");
         System.out.flush();
@@ -98,24 +98,24 @@ public class ApplicantManager {
 
         p = conn.prepareStatement(query);
         p.executeUpdate();
-        
+
         if (roomSSN != null) {
-        	query = "INSERT INTO RoommateRequest VALUES"
-        			+ "(" + roomSSN + "," + ssn + ",'" + "NULL" + "')";
-        	
-        	p = conn.prepareStatement(query);
-        	p.executeUpdate();
+            query = "INSERT INTO RoommateRequest VALUES"
+                    + "(" + roomSSN + "," + ssn + ",'" + "NULL" + "')";
+
+            p = conn.prepareStatement(query);
+            p.executeUpdate();
         }
-        
+
         System.out.println();
         System.out.println("              Application successfully submitted           ");
         System.out.println();
     }
-    
+
     private static void addRoommate(Connection conn) throws SQLException {
-    	
+
     }
-    
+
 //    private static void updateApplicant(Connection conn) throws SQLException {
 //    	
 //    }

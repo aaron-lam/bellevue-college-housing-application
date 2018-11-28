@@ -16,15 +16,15 @@ public class AdminAppManager {
                     break;
                 case '2':
                     System.out.println("Not required to implement this.");
-                	break;
+                    break;
                 case '3':
                     System.out.println("Not required to implement this.");
                     break;
                 case '4':
-                	checkApplication(conn);
+                    checkApplication(conn);
                     break;
                 case '5':
-                	approveApplication(conn);
+                    approveApplication(conn);
                     break;
                 case '6':
                     done = true;
@@ -34,15 +34,15 @@ public class AdminAppManager {
             }
         } while (!done);
     }
-    
+
     private static void checkApplication(Connection conn) throws SQLException {
-    	
+
     }
-    
+
     private static void approveApplication(Connection conn) throws SQLException {
-    	
+
     }
-    
+
     private static void printManageApplicants() {
         System.out.println("***********************************************************");
         System.out.println("                     ***************                       ");
@@ -54,6 +54,6 @@ public class AdminAppManager {
         System.out.println("              3. Delete Applicant Information              ");
         System.out.println("                4. Check Application Status                ");
         System.out.println("               5. Approve Application Status               ");
-        System.out.println("                        6. Quit                            ");	
+        System.out.println("                        6. Quit                            ");
     }
 }
