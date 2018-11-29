@@ -3,9 +3,9 @@ import java.sql.SQLException;
 
 public class AdminAppManager {
     public static void manageApplicants(Connection conn) throws SQLException {
-        printManageApplicants();
         boolean done = false;
         do {
+            printManageApplicants();
             System.out.print("Type in your option: ");
             System.out.flush();
             String ch = InputReader.readLine();
