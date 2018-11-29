@@ -55,7 +55,101 @@ public class AdminAppManager {
     }
 
     private static void approveApplication(Connection conn) throws SQLException {
+        String SSN;
+        SSN = InputReader.readEntry("Enter SSN of pending student: ");
+        System.out.print("Approval? (y/n) ");
+        System.out.flush();
+        String ch = InputReader.readLine();
+        System.out.println();
+        switch (ch.charAt(0)) {
+            case 'y':
+                String SuitePreference = "";
+                int BedroomPreferenceInt = 0;
+                String ApartmentPreference = "";
+                String VillagePreference = "";
+                String RequestedName = "";
+                String RequestedSpousebool = "";
+                String RequestedSpouseString = "";
+                String empty = "NULL";
+                String AptSuite;
+                String RoomsOpen = "SELECT SuitePreference, ApartmentPreference, VillagePreference FROM Applicant " +
+                        "WHERE SSN = " + SSN;
+                PreparedStatement x = conn.prepareStatement(RoomsOpen);
+                ResultSet r = x.executeQuery();
+                while (r.next()) {
+                    SuitePreference = r.getString(1);
+                    if (SuitePreference.equals(empty)) {
+                        AptSuite = "Apartment";
+                    } else {
+                        AptSuite = "Suite";
+                        if (SuitePreference.charAt(0) == 'O') {
+                            BedroomPreferenceInt = 1;
+                        } else {
+                            BedroomPreferenceInt = 2;
+                        }
+                    }
+                    ApartmentPreference = r.getString(2);
+                    if (ApartmentPreference.charAt(0) == 'T') {
+                        BedroomPreferenceInt = 2;
+                    } else {
+                        BedroomPreferenceInt = 4;
+                    }
+                    VillagePreference = r.getString(3);
+                }
+                String RoommatePreference = "SELECT RequestedName,RequestedSpouse FROM RoommateRequest" +
+                        "WHERE " + SSN + "= ApplicantSSN";
+                PreparedStatement y = conn.prepareStatement(RoomsOpen);
+                ResultSet s = y.executeQuery();
+                while (s.next()) {
+                    RequestedName = s.getString(1);
+                    RequestedSpousebool = s.getString(2);
+                    if (RequestedSpousebool.charAt(0) == '0') {
+                        RequestedSpouseString = "No";
+                    } else {
+                        RequestedSpouseString = "Yes";
+                    }
+                }
+                String ApartmentAddress = "";
+                String RoomAddress = "";
+                String RoomsOpenAgain = "SELECT BuildingNo,ApartmentSuiteNo FROM Assignment " +
+                        "WHERE SSN = NULL";
+                empty = "";
+                RoomsOpen = "SELECT BuildingNo,ApartmentSuiteNo FROM Assignment " +
+                        "WHERE SSN = NULL,AptSuite = " + ApartmentPreference + ",Village = /'" + VillagePreference +
+                        "/',MarriageEligable = /'" + RequestedSpousebool + "/',Bedroom =" + BedroomPreferenceInt;
+                PreparedStatement k = conn.prepareStatement(RoomsOpen);
+                ResultSet g = x.executeQuery();
+                while (g.next()) {
+                    ApartmentAddress = g.getString(1);
+                    RoomAddress = g.getString(2);
+                }
 
+                PreparedStatement j = conn.prepareStatement(RoomsOpenAgain);
+                ResultSet f = j.executeQuery();
+                while (f.next()) {
+                    ApartmentAddress = f.getString(1);
+                    RoomAddress = f.getString(2);
+                }
+                if (ApartmentAddress.equals(empty)) {
+                    System.out.println("All rooms full");
+                    break;
+                }
+                String query = "UPDATE Applicant SET ResidentStatus = 'Accepted' WHERE SSN =" + SSN;
+                PreparedStatement p = conn.prepareStatement(query);
+                p.executeUpdate();
+                System.out.println("The resident is approved.");
+                printManageApplicants();
+                break;
+            case 'n':
+                String query2 = "UPDATE Applicant SET ResidentStatus = 'Rejected' WHERE SSN =" + SSN;
+                p = conn.prepareStatement(query2);
+                p.executeUpdate();
+                System.out.println("The resident is rejected.");
+                printManageApplicants();
+                break;
+            default:
+                System.out.println(" Not a valid option.");
+        }
     }
 
     private static void printManageApplicants() {
