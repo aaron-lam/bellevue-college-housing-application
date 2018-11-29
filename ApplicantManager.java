@@ -63,7 +63,6 @@ public class ApplicantManager {
 					query = "SELECT BuildingNo, ApartmentSuiteNo, Bedroom, Bed, AptSuite, Village, MarriageEligable FROM Assignment "
 							 + "WHERE SSN = 'NULL'";
 					housingQuery(conn, query);
-					done = true;
 					break;
 				case '2':
 					String suitePreference = InputReader.readEntry("Enter arrangement preference (Apartment or Suite): ");
@@ -124,6 +123,7 @@ public class ApplicantManager {
     private static void housingQuery(Connection conn, String query) throws SQLException {
     	PreparedStatement p = conn.prepareStatement(query);
     	ResultSet r = p.executeQuery();
+    	System.out.println();
     	System.out.println("Building No   Apartment No    No Bedrooms     Bed No    "
     			+ " Apartment/Suite?     Village      Marriage Eligible?");
     	while (r.next()) {
@@ -145,7 +145,7 @@ public class ApplicantManager {
     private static void addNewApplicant(Connection conn) throws SQLException {
         String idNumber = null;
         String name, gender, college, department, studentStatus, maritalStatus;
-        String roomSSN = null, spouse = null;
+        String roommateName = null, spouse = null;
         
         String familyHeadSSN = null, headID = null, headCollege = null, headDept = null;
         name = InputReader.readEntry("Enter your name: ");
@@ -169,7 +169,7 @@ public class ApplicantManager {
 				case 'y':
 			        familyHeadSSN = InputReader.readEntry("Enter your family head's SSN: ");
 					headID = InputReader.readEntry("Enter family head's student ID: ");       
-					headCollege = InputReader.readEntry("Enter family head's college SSN: ");       
+					headCollege = InputReader.readEntry("Enter family head's college: ");       
 					headDept = InputReader.readEntry("Enter family head's department: ");
 					
 					done = true;
@@ -188,7 +188,7 @@ public class ApplicantManager {
         
 		switch (ch.charAt(0)) {
 			case 'y':
-				roomSSN = InputReader.readEntry("Enter roommate SSN: ");          
+				roommateName = InputReader.readEntry("Enter roommate name: ");          
 				spouse = InputReader.readEntry("Is requested a spouse? (0 for no, 1 for yes) :");
 				break;                                                         // Should Spouse field be a boolean instead?
 			case 'n':
@@ -210,7 +210,7 @@ public class ApplicantManager {
         
 		addFamilyHead(conn, familyHeadSSN, headID, headCollege, headDept);
 	
-		addRoommate(conn, roomSSN, ssn, spouse);
+		addRoommate(conn, roommateName,  ssn, spouse);
 
 
         System.out.println();
@@ -236,10 +236,10 @@ public class ApplicantManager {
         p.executeUpdate();
     }
 
-    private static void addRoommate(Connection conn, String roomSSN, String ssn, String spouse) throws SQLException {
-    	if (roomSSN != null) {
+    private static void addRoommate(Connection conn, String name, String ssn, String spouse) throws SQLException {
+    	if (name != null) {
     		String query = "INSERT INTO RoommateRequest VALUES"
-                + "(" + roomSSN + "," + ssn + "," + spouse + ")";	
+                + "('" + name +  "'," + ssn + "," + spouse + ")";	
 			PreparedStatement p = conn.prepareStatement(query);
 			p.executeUpdate();
     	}
@@ -248,8 +248,8 @@ public class ApplicantManager {
     private static void addFamilyHead(Connection conn, String familyHeadSSN, String headID, String headCollege, String headDept) throws SQLException {
         String query = null;
     	if (headID != null) {
-            query = "INSERT INTO RoommateRequest VALUES"
-                    + "('" + familyHeadSSN + "','" + headID + ",'" + headCollege + "','" + headDept + "')";
+            query = "INSERT INTO FamilyHead VALUES"
+                    + "('" + familyHeadSSN + "'," + headID + ",'" + headCollege + "','" + headDept + "')";
             PreparedStatement p = conn.prepareStatement(query);
             p.executeUpdate();
     	}
