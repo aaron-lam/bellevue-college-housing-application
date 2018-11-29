@@ -7,11 +7,11 @@ public class ApplicantManager {
     public static void applicantMain(Connection conn) throws SQLException {
         boolean done = false;
         printApplicantPage();
-        System.out.print("Type in your option: ");
-        System.out.flush();
-        String ch = InputReader.readLine();
-        System.out.println();
         do {
+			System.out.print("Type in your option: ");
+			System.out.flush();
+			String ch = InputReader.readLine();
+			System.out.println();
 			switch (ch.charAt(0)) {
 				case '1':
 					checkHousingAvailability(conn);
@@ -216,6 +216,7 @@ public class ApplicantManager {
         System.out.println();
         System.out.println("              Application successfully submitted           ");
         System.out.println();
+        printApplicantPage();
     }
     
     private static void insertApplicant(Connection conn, String idNumber, String ssn, String name, String gender, String college, String department,
