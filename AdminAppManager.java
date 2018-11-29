@@ -1,5 +1,7 @@
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.ResultSet;
+import java.sql.PreparedStatement;
 
 public class AdminAppManager {
     public static void manageApplicants(Connection conn) throws SQLException {
@@ -58,36 +60,38 @@ public class AdminAppManager {
         System.out.println();
         switch (ch.charAt(0)) {
             case 'y':
-                String SuitePreference;
-                int BeedroomPreferenceInt;
-                String ApartmentPreference;
-                String VillagePreference;
-                String RequestedName;
-                String RequestedSpousebool;
-                String RequestedSpouseString
+                String SuitePreference = "";
+                int BedroomPreferenceInt = 2;
+                String ApartmentPreference = "";
+                String VillagePreference = "";
+                String RequestedName = "";
+                String RequestedSpousebool = "";
+                String RequestedSpouseString = "";
                 String empty = "NULL";
-                String AptSuite;
+                String AptSuite = "";
                 String RoomsOpen = "SELECT SuitePreference,ApartmentPreference,VillagePreference FROM Applicant" +
-                        "WHERE SSN =" SSN;
+                        "WHERE SSN =" + SSN;
                 PreparedStatement x = conn.prepareStatement(RoomsOpen);
                 ResultSet r = x.executeQuery();
                 while (r.next()) {
-                    SuitePreferencee = r.getString(1);
+                    SuitePreference = r.getString(1);
                     if(SuitePreference.equals(empty)){
                         AptSuite = "Apartment";
                     } else{
                         AptSuite = "Suite";
-                        if(SuitePreference.charAt(0) == 'O'){
+                        String One = "One Bedroom";
+                        if(SuitePreference.equals(One)){
                             BedroomPreferenceInt = 1;
                         } else {
-                            BeedroomPreferenceInt = 2;
+                            BedroomPreferenceInt = 2;
                         }
                     }
                     ApartmentPreference = r.getString(2);
-                    if(ApartmentPreference.charAt(0) == "T"){
-                        BeedroomPreferenceInt = 2;
+                    String Two = "Two Bedroom";
+                    if(ApartmentPreference.equals(Two)){
+                        BedroomPreferenceInt = 2;
                     } else {
-                        BeedroomPreferenceInt = 4;
+                        BedroomPreferenceInt = 4;
                     }
                     VillagePreference = r.getString(3);
                 }
@@ -104,20 +108,21 @@ public class AdminAppManager {
                         RequestedSpouseString = "Yes";
                     }
                 }
-                String ApartmentAddress;
-                String RoomAddress;
-                String empty = "";
-                String RoomsOpen = "SELECT BuildingNo,ApartmentSuiteNo FROM Assignment" +
-                        "WHERE SSN = NULL,AptSuite = " + ApartmentPreferenceInt + ",Village = /'" + VillagePreference +
-                        "/',MarriageEligable = /'" + RequestedSpousebool + "/',Bedroom =" + BeedroomPreferenceInt;
-                PreparedStatement k = conn.prepareStatement(RoomsOpen);
+                String ApartmentAddress = "";
+                String RoomAddress = "";
+                empty = "" ;
+                String RoomsOpen2 = "SELECT BuildingNo,ApartmentSuiteNo FROM Assignment" +
+                        "WHERE SSN = NULL,AptSuite = " + AptSuite + ",Village = /'" + VillagePreference +
+                        "/',MarriageEligable = /'" + RequestedSpousebool + "/',Bedroom =" + BedroomPreferenceInt;
+                PreparedStatement k = conn.prepareStatement(RoomsOpen2);
                 ResultSet g = x.executeQuery();
                 while (g.next()) {
                     ApartmentAddress = g.getString(1);
                     RoomAddress = g.getString(2);
                 }
+                String RoomsOpenAgain = "";
                 if (ApartmentAddress.equals(empty)){
-                    String RoomsOpenAgain = "SELECT BuildingNo,ApartmentSuiteNo FROM Assignment" +
+                    RoomsOpenAgain = "SELECT BuildingNo,ApartmentSuiteNo FROM Assignment" +
                             "WHERE SSN = NULL";
                 }
                 PreparedStatement j = conn.prepareStatement(RoomsOpenAgain);
@@ -131,13 +136,13 @@ public class AdminAppManager {
                     break;
                 }
                 String query = "UPDATE Applicant SET ResidentStatus = 'Approved' WHERE SSN =" + SSN;
-                p = conn.prepareStatement(query);
-                p.executeUpdate();
+                k = conn.prepareStatement(query);
+                k.executeUpdate();
                 break;
             case 'n':
                 String query2 = "UPDATE Applicant SET ResidentStatus = 'Rejected' WHERE SSN =" + SSN;
-                p = conn.prepareStatement(query2);
-                p.executeUpdate();
+                k = conn.prepareStatement(query2);
+                k.executeUpdate();
                 break;
             default:
                 System.out.println(" Not a valid option.");
