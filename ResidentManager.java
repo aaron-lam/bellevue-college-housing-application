@@ -12,8 +12,8 @@ public class ResidentManager {
         String studentID = null;
         String name = null;
         String gender, college, department, maritalStatus;
-        userID = readEntry("Enter User ID: ");
-        password = readEntry("Enter password: ");
+        userID = InputReader.readEntry("Enter User ID: ");
+        password = InputReader.readEntry("Enter password: ");
         query = "SELECT * FROM Students "
                 + "WHERE IdNumber = " + userID;
 
@@ -43,7 +43,7 @@ public class ResidentManager {
         do {
             System.out.print("Type in your option: ");
             System.out.flush();
-            String ch = readLine();
+            String ch = InputReader.readLine();
             System.out.println();
             switch (ch.charAt(0)) {
                 case '1':
@@ -77,34 +77,5 @@ public class ResidentManager {
         System.out.println("               3. Update account Information               ");
         System.out.println("                        4. Quit                            ");
     } 
-    
-    static String readEntry(String prompt) {
-        try {
-            StringBuffer buffer = new StringBuffer();
-            System.out.print(prompt);
-            System.out.flush();
-            int c = System.in.read();
-            while (c != '\n' && c != -1) {
-                buffer.append((char) c);
-                c = System.in.read();
-            }
-            return buffer.toString().trim();
-        } catch (IOException e) {
-            return "";
-        }
-    }
-
-    private static String readLine() {
-        InputStreamReader isr = new InputStreamReader(System.in);
-        BufferedReader br = new BufferedReader(isr, 1);
-        String line = "";
-
-        try {
-            line = br.readLine();
-        } catch (IOException e) {
-            System.out.println("Error in SimpleIO.readLine: " + "IOException was thrown");
-            System.exit(1);
-        }
-        return line;
-    }
 }
+
