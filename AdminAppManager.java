@@ -1,4 +1,6 @@
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class AdminAppManager {
@@ -36,7 +38,20 @@ public class AdminAppManager {
     }
 
     private static void checkApplication(Connection conn) throws SQLException {
-
+        System.out.println("Here are the pending students:");
+        String query = "select SSN, StudentStatus,ApplicationDate from Applicant " +
+                "where ResidentStatus = 'Applied' order by StudentStatus desc, ApplicationDate asc";
+        PreparedStatement p = conn.prepareStatement(query);
+        p.clearParameters();
+        ResultSet r = p.executeQuery();
+        while (r.next()) {
+            String SSN = r.getString(1);
+            String StudentStatus = r.getString(2);
+            String ApplicationDate = r.getString(3);
+            System.out.println(SSN + ",  " + StudentStatus + ", " + ApplicationDate);
+        }
+        System.out.println();
+        printManageApplicants();
     }
 
     private static void approveApplication(Connection conn) throws SQLException {
